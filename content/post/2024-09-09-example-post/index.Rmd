@@ -16,7 +16,7 @@ h <- house_party_vote_share_by_district_1948_2020
 president_2020 <- read.csv("2020_presidential_district.csv")
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
 h <- h %>% 
   filter(raceYear=="2020")
 president_data <- president_2020 %>% 
@@ -27,11 +27,13 @@ president_data <- president_data %>%
   select(X2020,X.3,State,district_num,raceYear)
 ```
 
-## R Markdown
+## 2020 Presidential Election in Swing States
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+We are going to explore some of the pivotal swing states in the 2020 Presidential Election
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Michigan
+
+Here is a map of the 2020 Presidential election in Michigan by congressional district.
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
 
@@ -103,8 +105,13 @@ fig
 
 
 
+## Pennsylvania
 
-```{r}
+Here is a map of the 2020 Presidential election in Pennsylvania by congressional district (not actually: it's wrong).
+
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
 cd117_pa <- cd117 %>% 
             filter(STATENAME=="Pennsylvania") %>%
             mutate(DISTRICT = as.character(DISTRICT))%>%
@@ -146,8 +153,13 @@ fig2 <- suppressPlotlyMessage(ggplotly(pamap))
 fig2
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-```{r}
+
+## Wisconsin
+
+Here is a map of the 2020 Presidential election in Wisconsin by congressional district.
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
 cd117_wi <- cd117 %>% 
             filter(STATENAME=="Wisconsin") %>%
             mutate(DISTRICT = as.character(DISTRICT))%>%
@@ -189,7 +201,12 @@ fig3 <- suppressPlotlyMessage(ggplotly(wimap))
 fig3
 ```
 
-```{r}
+
+## Georgia
+
+Here is a map of the 2020 Presidential election in Georgia by congressional district.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
 cd117_ga <- cd117 %>% 
             filter(STATENAME=="Georgia") %>%
             mutate(DISTRICT = as.character(DISTRICT))%>%
