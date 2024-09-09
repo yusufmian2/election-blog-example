@@ -4,16 +4,55 @@ output: pdf_document
 date: "2024-09-09"
 ---
 
+
+## Ethan
+
+
+## Presidential Elections Across Time
+
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(tidyverse)
 #### want a state-level analysis
 library(readr)
+library(plotly)
 setwd("~/Desktop/Election Analytics Teaching/Election")
 house_party_vote_share_by_district_1948_2020 <- read_csv("house party vote share by district 1948-2020.csv")
 h <- house_party_vote_share_by_district_1948_2020
 president_2020 <- read.csv("2020_presidential_district.csv")
+abbrevs <- read.csv("states.csv")
+state_data <- read.csv("clean_wide_state_2pv_1948_2020.csv") %>% 
+  rename("State" = state) %>%
+  full_join(abbrevs, by = "State")
+```
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
+# Define map layout 
+map_layout <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  lakecolor = toRGB('white'),
+  showlakes = FALSE)
+
+# Create Voteshare Map
+pv2p_map <- plot_geo(state_data, locationmode = "USA-states") %>% 
+  add_trace(z = ~D_pv2p, locations = ~Abbreviation,
+            color = ~D_pv2p, colors = "RdBu", frame = ~year, # The raceYear frame creates an animation based on year
+            showscale = TRUE, zmin = 0, zmax = 100) %>% # Define color scale min and max
+  layout(title = "Presidential Two-Party Vote Share by State, 1948-2020", geo = map_layout)
+pv2p_map
+# Swing 
+state_data$D_swing <- state_data$D_pv2p - state_data$D_pv2p_lag1
+swing_map <- plot_geo(state_data, locationmode = "USA-states") %>% 
+  add_trace(z = ~D_swing, locations = ~Abbreviation,
+            color = ~D_swing, colors = "RdBu", frame = ~year, # The raceYear frame creates an animation based on year
+            showscale = TRUE, zmin = -30, zmax = 30) %>% # Define color scale min and max
+  layout(title = "Presidential Two-Party Swing by State, 1952-2020", geo = map_layout)
+swing_map
 ```
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
@@ -27,9 +66,12 @@ president_data <- president_data %>%
   select(X2020,X.3,State,district_num,raceYear)
 ```
 
-## 2020 Presidential Election in Swing States
 
-We are going to explore some of the pivotal swing states in the 2020 Presidential Election
+
+
+## 2020 Presidential Election in Swing States - Yusuf
+
+Now, we are going to take a deeper dive into some of the pivotal swing states in the 2020 Presidential Election.
 
 ## Michigan
 
@@ -247,6 +289,8 @@ gamap <- ggplot() +
 fig4 <- suppressPlotlyMessage(ggplotly(gamap))
 fig4
 ```
+
+
 
 
 
